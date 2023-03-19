@@ -1,9 +1,9 @@
 # this is a test Dockerfile -- DO NOT USE YET
-FROM python:3.11:1-slim-bullseye as base
+FROM python:3.11.1-slim-bullseye as base
 
 # will install only dbt-core and dbt-bigquery adapter
-ARG dbt_core_ref=dbt-core@v1.5.0b4
-ARG dbt_bigquery_ref=dbt-bigquery@v1.5.0b4
+ARG dbt_core_ref=dbt-core
+ARG dbt_bigquery_ref=dbt-bigquery
 
 # System setup
 RUN apt-get update \
