@@ -1,7 +1,7 @@
 # fulljoin-v0
 ## Enjoy slow sundays
 
-To work in interact with this repo:
+To interact with this repo:
 
 Create a virtual environment
 
