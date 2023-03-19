@@ -1,0 +1,6 @@
+# These owners will be the default owners for everything in
+# the repo.
+# Later this can be split into specific direcotires
+
+# @algirdasUsername -- add algirdas to codeowners
+@floatingsloth
