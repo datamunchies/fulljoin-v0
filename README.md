@@ -14,5 +14,10 @@ Activate it
 ```bash
 source venv/bin/activate
 ```
+Upgrade pip
+
+```bash
+pip install --upgrade pip
+```
 
 Do the work
