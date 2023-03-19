@@ -6,38 +6,43 @@ ARG dbt_core_ref=dbt-core
 ARG dbt_bigquery_ref=dbt-bigquery
 
 # System setup
-RUN apt-get update \
-  && apt-get dist-upgrade -y \
-  && apt-get install -y --no-install-recommends \
+RUN apt-get update -y && \
+    apt-get dist-upgrade -y && \
+    apt-get install -y --no-install-recommends -y -q \
+    zsh \
     git \
     ssh-client \
-    software-properties-common \
-    make \
     build-essential \
     ca-certificates \
-    libpq-dev \
-  && apt-get clean \
-  && rm -rf \
-    /var/lib/apt/lists/* \
-    /tmp/* \
-    /var/tmp/*
+    libpq-dev && \
+    apt-get clean &&\
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Env vars
 ENV PYTHONIOENCODING=utf-8
 ENV LANG=C.UTF-8
+ENV DBT_DIR /dbt
 
 # Update python
 RUN python -m pip install --upgrade pip setuptools wheel --no-cache-dir
 
 # Set docker basics
-WORKDIR /usr/app/dbt/
-VOLUME /usr/app
-ENTRYPOINT ["dbt"]
+WORKDIR $DBT_DIR
+VOLUME /dbt
 
-# dbt-core
+# install dbt-core
 FROM base as dbt-core
 RUN python -m pip install --no-cache-dir "git+https://github.com/dbt-labs/${dbt_core_ref}#egg=dbt-core&subdirectory=core"
 
-# dbt-bigquery
+# install dbt-bigquery
 FROM base as dbt-bigquery
 RUN python -m pip install --no-cache-dir "git+https://github.com/dbt-labs/${dbt_bigquery_ref}#egg=dbt-bigquery"
+
+COPY ./dbt_project.yml /dbt/dbt_project.yml
+COPY ./models /dbt/models
+COPY ./macros /dbt/macros
+COPY ./tests /dbt/tests
+COPY ./logs /dbt/logs
+
+# ENTRYPOINT ["dbt"]
+ENTRYPOINT ["zsh"]
