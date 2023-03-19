@@ -14,6 +14,7 @@ Activate it
 ```bash
 source venv/bin/activate
 ```
+
 Upgrade pip
 
 ```bash
