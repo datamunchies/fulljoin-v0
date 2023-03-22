@@ -4,6 +4,7 @@ FROM python:3.11.1-slim-bullseye as base
 # will install only dbt-core and dbt-bigquery adapter
 ARG dbt_core_ref=dbt-core
 ARG dbt_bigquery_ref=dbt-bigquery
+ARG dbt_clickhouse_ref=dbt-clickhouse
 
 # System setup
 RUN apt-get update -y && \
@@ -38,6 +39,10 @@ RUN python -m pip install --no-cache-dir "git+https://github.com/dbt-labs/${dbt_
 FROM base as dbt-bigquery
 RUN python -m pip install --no-cache-dir "git+https://github.com/dbt-labs/${dbt_bigquery_ref}#egg=dbt-bigquery"
 
+# install dbt-clickhouse
+FROM base as dbt-clickhouse
+RUN python -m pip install --no-cache-dir "git+https://github.com/ClickHouse/${dbt_clickhouse_ref}#egg=dbt-clickhouse"
+
 COPY ./dbt_project.yml /dbt/dbt_project.yml
 COPY ./models /dbt/models
 COPY ./macros /dbt/macros
@@ -45,4 +50,4 @@ COPY ./tests /dbt/tests
 COPY ./logs /dbt/logs
 
 # ENTRYPOINT ["dbt"]
-ENTRYPOINT ["zsh"]
+ENTRYPOINT ["/bin/zsh"]
