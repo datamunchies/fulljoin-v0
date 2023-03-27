@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: clickhouse-configmap
+data:
+  CLICKHOUSE_HOST: host.minikube.internal
+  CLICKHOUSE_PORT: "8123"
