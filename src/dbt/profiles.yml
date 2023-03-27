@@ -1,0 +1,11 @@
+clickhouse:
+  target: dev
+  outputs:
+    dev:
+      type: clickhouse
+      schema: default
+      host: "{{ env_var('CLICKHOUSE_SERVICE_HOST') }}"
+      port: 8123
+      user: default
+      password: ''
+      secure: False
