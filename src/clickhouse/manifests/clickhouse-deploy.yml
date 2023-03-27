@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clickhouse
+  labels:
+    app: clickhouse
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: clickhouse
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 3
+  template:
+    metadata:
+      labels:
+        app: clickhouse
+    spec:
+      containers:
+        - name: clickhouse
+          image: slowsunday/fulljoin-clickhouse:latest
+          ports:
+            - containerPort: 8123
+          envFrom:
+            - configMapRef:
+                name: clickhouse-configmap
+            - secretRef:
+                name: clickhouse-secret
