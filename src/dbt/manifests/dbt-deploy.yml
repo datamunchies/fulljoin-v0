@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dbt
+  labels:
+    app: dbt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dbt
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 3
+  template:
+    metadata:
+      labels:
+        app: dbt
+    spec:
+      containers:
+        - name: dbt
+          image: slowsunday/fulljoin:latest
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: dbt-configmap
+            - secretRef:
+                name: dbt-secret
