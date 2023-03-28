@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: dbt-configmap
 data:
-  CLICKHOUSE_SVC_ADDRESS: "clickhouse:8123"
+  CLICKHOUSE_SVC_ADDRESS: "clickhouse"

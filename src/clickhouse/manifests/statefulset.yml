@@ -1,33 +1,29 @@
-#apiVersion: apps/v1
-#kind: StatefulSet
-#metadata:
-#  name: clickhouse
-#spec:
-#  serviceName: "not-applicable"
-#  selector:
-#    matchLabels:
-#      app: clickhouse
-#  template:
-#    metadata:
-#      labels:
-#        app: clickhouse
-#    spec:
-#      containers:
-#        - name: clickhouse
-#          image: slowsunday/fulljoin-clickhouse:latest
-#          ports:
-#            - name: http
-#              protocol: TCP
-#              containerPort: 8123
-#          envFrom:
-#            - configMapRef:
-#                name: clickhouse-configmap
-#            - secretRef:
-#                name: clickhouse-secret
-#          volumeMounts:
-#            - mountPath: "/var/lib/clickhouse"
-#              name: clickhouse-volume
-#      volumes:
-#        - name: clickhouse-volume
-#          persistentVolumeClaim:
-#            claimName: clickhouse-vol
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: clickhouse
+spec:
+  serviceName: "not-applicable"
+  selector:
+    matchLabels:
+      app: clickhouse
+  template:
+    metadata:
+      labels:
+        app: clickhouse
+    spec:
+      containers:
+        - name: clickhouse
+          image: slowsunday/fulljoin-clickhouse:latest
+          envFrom:
+            - configMapRef:
+                name: clickhouse-configmap
+            - secretRef:
+                name: clickhouse-secret
+          volumeMounts:
+            - mountPath: "/var/lib/clickhouse"
+              name: clickhouse-volume
+      volumes:
+        - name: clickhouse-volume
+          persistentVolumeClaim:
+            claimName: clickhouse-pvc
