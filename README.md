@@ -119,5 +119,3 @@ dbt debug
 
 You should see [Ok Test Connection] in the prompt.
 Once you stopped interacting with the services you can exit them with `ctrl+c` and `ctrl+d`  
-
-Make sure to run `minikube stop` to close open ports and shut down running services once you are done developing. 
