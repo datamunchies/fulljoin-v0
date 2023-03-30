@@ -103,7 +103,7 @@ COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 EXPOSE 9000 8123 9009
-VOLUME /var/lib/clickhouse
+VOLUME /var/lib/clickhouse /data
 
 ENV CLICKHOUSE_CONFIG /etc/clickhouse-server/config.xml
 
