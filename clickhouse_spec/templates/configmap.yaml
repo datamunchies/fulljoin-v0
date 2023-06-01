@@ -1,0 +1,14 @@
+{{- if .Values.clickhouse.configmap.enabled -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.clickhouse.deployment.name }}
+  labels:
+    app.kubernetes.io/name: {{ include "clickhouse.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+  namespace: {{ .Values.namespace }}
+data:
+  CLICKHOUSE_SVC_HOST: "{{ .Values.clickhouse.configmap.svcHost }}"
+  CLICKHOUSE_PORT: "{{ .Values.clickhouse.configmap.port }}"
+{{- end -}}
