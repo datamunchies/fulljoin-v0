@@ -19,13 +19,13 @@ RUN sed -i "s|http://archive.ubuntu.com|${apt_archive}|g" /etc/apt/sources.list 
         locales \
         tzdata \
         nano \
-        git \
-        curl \
+        lsof \
+        gosu \
     && apt-get clean
 
 ARG REPO_CHANNEL="stable"
 ARG REPOSITORY="deb https://packages.clickhouse.com/deb ${REPO_CHANNEL} main"
-ARG VERSION="23.2.4.12"
+ARG VERSION="23.4.2.11"
 ARG PACKAGES="clickhouse-client clickhouse-server clickhouse-common-static"
 
 # set non-empty deb_location_url url to create a docker image

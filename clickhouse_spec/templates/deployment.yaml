@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clickhouse
+  namespace: {{ .Values.namespace }}
+  labels:
+    #app: {{ .Values.clickhouse.deployment.name }}
+    app.kubernetes.io/name: {{ include "clickhouse.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.clickhouse.deployment.replicas }}
+  selector:
+    matchLabels:
+      #app: {{ .Values.clickhouse.deployment.name }}
+      app.kubernetes.io/name: {{ include "clickhouse.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  strategy:
+    type: {{ .Values.clickhouse.deployment.strategy.type }}
+    rollingUpdate:
+      maxSurge: {{ .Values.clickhouse.deployment.strategy.maxSurge }}
+  template:
+    metadata:
+      labels:
+        #app: {{ .Values.clickhouse.deployment.name }}
+        app.kubernetes.io/name: {{ include "clickhouse.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+      - name: {{ include "clickhouse.name" . }}
+        image: "{{ .Values.clickhouse.deployment.image.repository }}:{{ .Values.clickhouse.deployment.image.tag }}"
+        env:
+          - name: CLICKHOUSE_USER
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "clickhouse.name" .}}
+                key: CLICKHOUSE_USER
+          - name: CLICKHOUSE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "clickhouse.name" .}}
+                key: CLICKHOUSE_PASSWORD
+          - name: CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "clickhouse.name" .}}
+                key: CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT
+        ports:
+        - containerPort: {{ .Values.clickhouse.deployment.ports.port1 }}
+        - containerPort: {{ .Values.clickhouse.deployment.ports.port2 }}
+        - containerPort: {{ .Values.clickhouse.deployment.ports.port3 }}
+

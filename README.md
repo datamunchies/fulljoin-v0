@@ -3,22 +3,19 @@
 
 ## **Whats inside**
 
-This repository is architectured following microservices logic. There is a direcory `src` that contains 2 sub-directories:  
-
-`clickhouse`  
-`dbt` 
+This repository is architectured following microservices logic.  
+The directory `src` contains subdirectory `clickhouse` and `dbt` with respective folders to the services.
+The directory `clickhouse_spec` and `dbt_spec` contains `helm` templates for launching the services.
 
 The `clickhouse` directory contains the following:  
 `Dockerfile` - a blueprint to install clickhouse   
 `docker_related_config` - a configuration file necessary for configuring clickhouse server, user settings     
 `entrypoint` - the entrypoint to run when docker container runs  
-`manifests` - this folder holds infrastructure code for provisioning and deploying clickhouse server on Kubernetes. Currently it is set to run on minikube (locally).
 
 The `dbt` directory contains the following:  
 `Dockerfile` - a blueprint to install dbt-core, dbt-clickhouse and dbt-bigquery adapters  
 `dbt_project` - a dbt specific config file   
 `profiles.yml` - a dbt profiles file to connect to clickhouse  
-`manifests` - this folder holds infrastructure code for provisioning and deploying dbt service on Kubernetes (minikube)  
 A standard set of directories related to dbt, like models, tests, macros, etc.
 
 ## **Prerequisites**
@@ -31,6 +28,12 @@ You will also need:
 [Download here](https://www.docker.com/products/docker-desktop/)  
 
 `k9s` [Download here](https://k9scli.io/topics/install/)
+
+`helm` [Link to helm](https://helm.sh/docs/intro/install/)
+Install it with brew via:
+```bash
+brew install helm
+```
 
 After you install docker you need to log-in, the log-in details **will be provided for you separately.**  
 
@@ -64,9 +67,10 @@ Build the `clickhouse` docker image.
 docker build .
 ```
 
-Apply configurations:
+Launch clickhouse by navigating to `/clickhouse_spec` and runnning the command:
+
 ```bash
-kubectl apply -f ./manifests
+helm install clickhouse . --namespace dev
 ```
 
 Navigate to `dbt` directory:
@@ -79,15 +83,16 @@ Build the `dbt` docker image:
 docker build .
 ```
 
-Apply configurations:
+Launch dbt by navigating to `/dbt_spec` and running the command:
 ```bash
-kubectl apply -f ./manifests
+helm install dbt . --namespace dev
 ```
 
 To preview the running services run:
 ```bash
 k9s
 ```
+Press `1` for `dev` namespace. 
 
 If you did everything correctly you should see 2 running services as in the image bellow:
 ![image info](/utils/assets/Screenshot%202023-03-27%20at%2019.48.15.png)
@@ -96,11 +101,6 @@ To interact with this interface you can use arrows, `up`, `down`, `enter`, `esc`
 
 To get inside of one of the services you can navigate with arrow keys and simply hit `s` key on your keyboard. This will bring up the shell of the service.  
 
-If you entered `clickhouse` service shell, you can then start a clickhouse service as following:
-
-```bash
-clickhouse-start
-```
 Open another termnial window (external or in vscode) enter:
 ```bash
 k9s
@@ -110,6 +110,11 @@ You will be brought back to the service interface, this time navigate to `dbt` s
 Once inside `dbt` service shell you can initiate your project and test the connection with the following commands:
 ```bash
 dbt init
+```
+
+!!! Make sure to adjust the password in profiles.yml inside `dbt` pod by running:
+```bash
+nano profiles.yml
 ```
 
 To test connection:
