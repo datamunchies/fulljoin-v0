@@ -18,7 +18,7 @@ dbt:
   configmap:
     enabled: true
     name: dbt-config
-    svcHost: clickhouse
+    svcHost: clickhouse-service
     port: "8000"
 
   # Service configuration

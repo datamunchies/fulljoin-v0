@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "dbt.fullname" . }}
+  name: {{ include "dbt.fullname" . }}-deployment
   namespace: {{ .Values.namespace }}
   labels:
     app.kubernetes.io/name: {{ include "dbt.name" . }}

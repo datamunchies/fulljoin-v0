@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .Values.clickhouse.deployment.name }}
+  name: {{ include "clickhouse.fullname" . }}-config
   labels:
     app.kubernetes.io/name: {{ include "clickhouse.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}

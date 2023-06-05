@@ -4,7 +4,7 @@ clickhouse:
     dev:
       type: clickhouse
       schema: default
-      host: clickhouse
+      host: clickhouse-service
       port: "{{ env_var('CLICKHOUSE_SERVICE_PORT') | int }}"
       user: admin
       password: ''
