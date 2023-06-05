@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: clickhouse
+  name: {{ include "clickhouse.fullname" . }}-deployment
   namespace: {{ .Values.namespace }}
   labels:
     #app: {{ .Values.clickhouse.deployment.name }}
@@ -33,17 +33,17 @@ spec:
           - name: CLICKHOUSE_USER
             valueFrom:
               secretKeyRef:
-                name: {{ include "clickhouse.name" .}}
+                name: {{ include "clickhouse.name" .}}-server-secret
                 key: CLICKHOUSE_USER
           - name: CLICKHOUSE_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: {{ include "clickhouse.name" .}}
+                name: {{ include "clickhouse.name" .}}-server-secret
                 key: CLICKHOUSE_PASSWORD
           - name: CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT
             valueFrom:
               secretKeyRef:
-                name: {{ include "clickhouse.name" .}}
+                name: {{ include "clickhouse.name" .}}-server-secret
                 key: CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT
         ports:
         - containerPort: {{ .Values.clickhouse.deployment.ports.port1 }}
